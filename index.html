@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Strava Activity Extractor</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <h1>Strava Activity Extractor</h1>
+  <input type="file" id="imageInput" accept="image/*">
+  <button onclick="processImage()">Extract Data</button>
+  <pre id="output"></pre>
+
+  <script>
+    async function processImage() {
+      const file = document.getElementById('imageInput').files[0];
+      if (!file) return alert('Please select an image');
+      const output = document.getElementById('output');
+      output.textContent = "Processing...";
+
+      const { data: { text } } = await Tesseract.recognize(
+        file, 'eng', { logger: m => console.log(m) }
+      );
+
+      // Pattern matching - adjust as necessary
+      const dateMatch = text.match(/(\d{2}:\d{2} on Sunday, (\d{1,2}) (\w+) (\d{4}))/);
+      const durationMatch = text.match(/(\d{1,2}:\d{2}:\d{2})/);
+      const distanceMatch = text.match(/(\d{2,3}\.\d{2}) km/);
+      const elevationMatch = text.match(/(\d{2,4}) m/);
+
+      // Example conversion for date
+      let dateStr = '';
+      if (dateMatch) {
+        const day = dateMatch[2].padStart(2, '0');
+        const months = {January:"01",February:"02",March:"03",April:"04",May:"05",June:"06",
+                        July:"07",August:"08",September:"09",October:"10",November:"11",December:"12"};
+        const month = months[dateMatch[3]];
+        const year = dateMatch[4];
+        dateStr = `${day}/${month}/${year}`;
+      }
+
+      const results = [
+        dateStr,
+        durationMatch ? durationMatch[1] : '',
+        distanceMatch ? distanceMatch[1] : '',
+        elevationMatch ? elevationMatch[1] : ''
+      ];
+
+      output.textContent = results.join(", ");
+    }
+  </script>
+</body>
+</html>
