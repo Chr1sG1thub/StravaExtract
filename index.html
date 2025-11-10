@@ -32,7 +32,7 @@
   //tessedit_char_whitelist: '0123456789:/.,-'
 //});
 
-const { data: { text } } = await worker.recognize(
+const { data: { text } } = await Tesseract.recognize(
         file, 'eng', { logger: m => console.log(m) }
       );
 
