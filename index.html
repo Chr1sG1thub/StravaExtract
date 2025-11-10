@@ -20,7 +20,18 @@
       const output = document.getElementById('output');
       output.textContent = "Processing...";
 
-      const { data: { text } } = await Tesseract.recognize(
+const worker = Tesseract.createWorker();
+
+await worker.load();
+await worker.loadLanguage('eng');
+await worker.initialize('eng');
+
+// Set the whitelist for just numbers, slashes, colons, etc.
+await worker.setParameters({
+  tessedit_char_whitelist: '0123456789:/.,-'
+});
+
+const { data: { text } } = await worker.recognize(
         file, 'eng', { logger: m => console.log(m) }
       );
 
