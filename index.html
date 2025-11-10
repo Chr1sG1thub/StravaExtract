@@ -20,6 +20,7 @@
       const output = document.getElementById('output');
       output.textContent = "Processing...";
 
+import { createWorker } from 'tesseract.js';
 const worker = Tesseract.createWorker();
 
 await worker.load();
