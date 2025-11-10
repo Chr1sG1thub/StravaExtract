@@ -9,6 +9,7 @@
   <h1>Strava Activity Extractor</h1>
   <input type="file" id="imageInput" accept="image/*">
   <button onclick="processImage()">Extract Data</button>
+  <pre id="outputraw"></pre>
   <pre id="output"></pre>
 
   <script>
@@ -46,8 +47,8 @@
         elevationMatch ? elevationMatch[1] : ''
       ];
 
-      output.textContent = results.join(", ");
       output.textContent = text;
+      outputraw.textContent = results.join(", ");
     }
   </script>
 </body>
