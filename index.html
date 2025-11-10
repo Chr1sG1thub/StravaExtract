@@ -55,9 +55,9 @@ const { data: { text } } = await Tesseract.recognize(
 
       const results = [
         dateStr,
-        durationMatch ? durationMatch[1] : '',
-        distanceMatch ? distanceMatch[1] : '',
-        elevationMatch ? elevationMatch[1] : ''
+        durationMatch ? durationMatch[0] : '',
+        distanceMatch ? distanceMatch[0] : '',
+        elevationMatch ? elevationMatch[0] : ''
       ];
 
       output.textContent = text;
